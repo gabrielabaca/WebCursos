@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}   
+
+{% block main %}
+
+<section class="alumnos section-bg" style="margin-top: 50px">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Ranking de Alumnos</h2>
+            <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+       
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Camada</th>
+            <th scope="col">Nota final</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for x in alumnos %}
+          <tr>
+            <th>
+              {% if x.puesto == 1 %}
+                <i class="fa fa-medal" style="color:#efb810"></i>
+              {% elif x.puesto == 2 %} 
+                <i class="fa fa-medal" style="color:#bfc1c1"></i>
+              {% else %}
+              <i class="fa fa-medal" style="color:#a26a41"></i>
+              
+              {% endif %}
+            </th>
+            <td>{{ x.id }}</td>
+            <td>{{ x.nombre }}</td>
+            <td>{{ x.apellido }}</td>
+            <td>{{ x.camada }}</td>
+            <td>{{ x.nota }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+</section>
+
+{% endblock %}

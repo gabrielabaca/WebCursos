@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<section id="services" class="services section-bg" style="margin-top: 50px">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Cursos</h2>
+            <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+        <div class="row justify-content-center">
+        {% for x in cursos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="icon-box" >
+                <div class="icon"><i class='
+                    {% if x.nombre == "Python" %}
+                        fa fa-brands fa-python
+                    {% elif x.nombre == "JS"%}
+                        fa fa-brands fa-js
+                    {% elif x.nombre == "Diseño Grafico" %}
+                        fa fa-palette
+                    {% elif x.nombre == "DevOps" %}
+                        fa fa-brands fa-dev
+                    {% endif %}
+                    ' style="color: {{x.color}};"></i></div>
+                <h4 class="title"><a href="">{{ x.nombre }}</a></h4>
+                <p class="description">
+                    {{ x.descripcion }}
+                </p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+ {% endblock %}

@@ -1,0 +1,504 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block main %}
+{% if user.is_authenticated %}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <button type="button" class="btn" data-dismiss="modal" >
+            <i class="fa fa-close"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <form id="form-modal" action="editar" method="POST" class="form-inline" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="form-contenido">
+
+            </div>
+          </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button form="form-modal" value="accion" type="submit" name="accion" id="accion" class="btn btn-success">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<section class="panel section-bg">
+    <div class="container">
+      
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <form>
+                <button class="nav-link {% if active == 'buscar' %}active{% endif %}" 
+                data-bs-toggle="tab" 
+                data-bs-target="#buscar"
+                role="tab" 
+                aria-controls="buscar" 
+                aria-selected="true"
+                type="submit"
+                name="active"
+                value="buscar"
+                formmethod="get"
+                formaction="panel"
+                >
+                Buscar
+                </button>
+                </form>
+            </li>
+            <li class="nav-item" role="presentation">
+                <form>
+                <button 
+                class="nav-link {% if active == 'profesores' %}active{% endif %}" 
+                data-bs-toggle="tab" 
+                data-bs-target="#profesores" 
+                role="tab" 
+                aria-controls="profesores" 
+                aria-selected="false"
+                type="submit"
+                name="active"
+                value="profesores"
+                formmethod="get"
+                formaction="panel"
+                >
+                Editar Profesores
+                </button>
+                </form>
+            </li>
+            <li class="nav-item" role="presentation">
+                <form>
+                <button class="nav-link {% if active == 'alumnos' %}active{% endif %}" 
+                data-bs-toggle="tab" 
+                data-bs-target="#alumnos" 
+                role="tab" 
+                aria-controls="alumnos" 
+                aria-selected="false"
+                type="submit"
+                name="active"
+                value="alumnos"
+                formmethod="get"
+                formaction="panel"
+                >
+                Editar Alumnos
+                </button>
+                </form>
+            </li>
+            <li class="nav-item" role="presentation">
+                <form>
+                <button class="nav-link {% if active == 'cursos' %}active{% endif %}" 
+                data-bs-toggle="tab" 
+                data-bs-target="#cursos" 
+                role="tab" 
+                aria-controls="cursos" 
+                aria-selected="false"
+                type="submit"
+                name="active"
+                value="cursos"
+                formmethod="get"
+                formaction="panel"
+                >
+                Editar Cursos
+                </button>
+                </form>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          
+          <span class="mensaje">{{ mensaje }}</span>
+          
+          
+
+            <div class="tab-pane fade {% if active == 'buscar' %}show active{% endif %}" id="buscar" role="tabpanel" aria-labelledby="buscar">
+                <h2>Buscar en la DB</h2>
+                <form action="buscar" method="GET">
+                    <div class="row justify-content-center">
+                        <div class="form-group col">
+                            <input type="text" class="form-control" id="buscar" name="buscar" placeholder="Buscar dentro de la DB">
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+
+                    </div>
+
+                </form>
+                {% block buscar %}
+                {% endblock %}
+            </div>
+            <div class="tab-pane fade {% if active == 'profesores' %}show active{% endif %}" id="profesores" role="tabpanel" aria-labelledby="profesores">
+                  
+                {% if active == 'profesores' %}
+                <div class="container">
+
+                    <div class="section-title">
+                        <h2>Editar Profesores</h2>
+                    </div>
+                    <button class="btn btn-success" style="float:right;">
+                      <a 
+                      href="#" 
+                      data-toggle="modal" 
+                      data-target="#exampleModal" 
+                      data-if="profesores"
+                      data-id=""
+                      data-nombre=""
+                      data-apellido=""
+                      data-cumpleaños=""
+                      data-bio=""
+                      data-camada=""
+                      data-foto=""
+                      data-email=""
+                      data-linkedin=""
+                      data-git=""
+                      >
+                          Crear Nuevo
+                      </a>
+                      </button>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Camada</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for x in consulta %}
+                      <tr>
+                        <td>{{ x.id }}</td>
+                        <td>{{ x.nombre }}</td>
+                        <td>{{ x.apellido }}</td>
+                        <td>{{ x.camada }}</td>
+                        <td class="inline">
+                          <button class="btn">
+                            <a 
+                            href="#" 
+                            data-toggle="modal" 
+                            data-target="#exampleModal" 
+                            data-if="profesores"
+                            data-id="{{ x.id }}"
+                            data-nombre="{{ x.nombre }}"
+                            data-apellido="{{ x.apellido }}"
+                            data-cumpleaños="{{ x.cumpleaños }}"
+                            data-bio="{{ x.bio }}"
+                            data-camada="{{ x.camada }}"
+                            data-foto="{{ x.foto }}"
+                            data-email="{{ x.email }}"
+                            data-linkedin="{{ x.link_linkedin }}"
+                            data-git="{{ x.link_git }}"
+                            >
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            </button>
+                            <form>
+                              {% csrf_token %}
+                              <input type="text" value="{{ active }}" name="db" style="display:none;">
+                              <button class="btn"
+                              type="submit"
+                              name="borrar"
+                              value="{{ x.id }}"
+                              formmethod="POST"
+                              formaction="panel"
+                              ><a>
+                              <i class="fa-solid fa-eraser"></i>
+                              </a>
+                              </button>
+                            </form>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade {% if active == 'alumnos' %}show active{% endif %}" id="alumnos" role="tabpanel" aria-labelledby="alumnos">
+              {% if active == 'alumnos' %}
+              <div class="container">
+
+                  <div class="section-title">
+                      <h2>Editar Alumnos</h2>
+                  </div>
+                  <button class="btn btn-success" style="float:right;">
+                    <a 
+                      href="#" 
+                      data-toggle="modal" 
+                      data-target="#exampleModal" 
+                      data-if="alumnos"
+                      data-id=""
+                      data-nombre=""
+                      data-apellido=""
+                      data-cumpleaños=""
+                      data-bio=""
+                      data-camada=""
+                      data-foto=""
+                      data-email=""
+                      data-linkedin=""
+                      data-git=""
+                      >
+                      Crear Nuevo
+                    </a>
+                  </button>
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Apellido</th>
+                      <th scope="col">Camada</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for x in consulta %}
+                    <tr>
+                      <td>{{ x.id }}</td>
+                      <td>{{ x.nombre }}</td>
+                      <td>{{ x.apellido }}</td>
+                      <td>{{ x.camada }}</td>
+                      <td class="inline">
+                        <button class="btn">
+                          <a 
+                          href="#" 
+                          data-toggle="modal" 
+                          data-target="#exampleModal" 
+                          data-if="alumnos"
+                          data-id="{{ x.id }}"
+                          data-nombre="{{ x.nombre }}"
+                          data-apellido="{{ x.apellido }}"
+                          data-cumpleaños="{{ x.cumpleaños }}"
+                          data-camada="{{ x.camada }}"
+                          data-foto="{{ x.foto }}"
+                          data-cursos="{{ x.cursos }}"
+                          data-email="{{ x.email }}"
+                          data-nota="{{ x.nota }}"
+                          >
+                              <i class="fa-solid fa-pen-to-square"></i>
+                          </a>
+                        </button>
+                          <form >
+                            {% csrf_token %}
+                            <input type="text" value="{{ active }}" name="db" style="display:none;">
+                            <button class="btn"
+                            type="submit"
+                            name="borrar"
+                            value="{{ x.id }}"
+                            formmethod="POST"
+                            formaction="panel"
+                            ><a>
+                            <i class="fa-solid fa-eraser"></i>
+                            </a>
+                            </button>
+                          </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+              {% endif %}
+            </div>
+            <div class="tab-pane fade {% if active == 'cursos' %}show active{% endif %}" id="cursos" role="tabpanel" aria-labelledby="cursos">
+              {% if active == 'cursos' %}
+              <div class="container">
+
+                  <div class="section-title">
+                      <h2>Editar Cursos</h2>
+                      </div>
+                      <button class="btn btn-success" style="float:right;">
+                        <a 
+                          href="#" 
+                          data-toggle="modal" 
+                          data-target="#exampleModal" 
+                          data-if="cursos"
+                          data-id=""
+                          data-nombre=""
+                          data-apellido=""
+                          data-cumpleaños=""
+                          data-bio=""
+                          data-camada=""
+                          data-foto=""
+                          data-email=""
+                          data-linkedin=""
+                          data-git=""
+                          >
+                          Crear Nuevo
+                        </a>
+                      </button>
+                 
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Descripcion</th>
+                      <th scope="col">Camada</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for x in consulta %}
+                    <tr>
+                      <td>{{ x.id }}</td>
+                      <td>{{ x.nombre }}</td>
+                      <td>{{ x.descripcion }}</td>
+                      <td>{{ x.tipo }}</td>
+                      <td>{{ x.camada }}</td>
+                      <td class="inline">
+                        <button class="btn col-lg-6">
+                          <a
+                          href="#" 
+                          data-toggle="modal" 
+                          data-target="#exampleModal" 
+                          data-if="cursos"
+                          data-id="{{ x.id }}"
+                          data-nombre="{{ x.nombre }}"
+                          data-descripcion="{{ x.descripcion }}"
+                          data-camada="{{ x.camada }}"
+                          data-cantidad_clases="{{ x.cantidad_clases }}"
+                          data-inicio="{{ x.inicio }}"
+                          data-portada="{{ x.portada }}"
+                          data-tipo="{{ x.tipo }}"
+                          >
+                              <i class="fa-solid fa-pen-to-square"></i>
+                          </a>
+                        </button>
+                          <form class="col-lg-6">
+                            {% csrf_token %}
+                            <input type="text" value="{{ active }}" name="db" style="display:none;">
+                            <button class="btn"
+                            type="submit"
+                            name="borrar"
+                            value="{{ x.id }}"
+                            formmethod="POST"
+                            formaction="panel"
+                            ><a>
+                            <i class="fa-solid fa-eraser"></i>
+                            </a>
+                            </button>
+                          </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+              {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<script >
+    $('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var modal = $(this)
+
+  let datos = {}
+  switch(button.data('if')){
+    case 'profesores':
+      datos = {
+        id:button.data('id'),
+        nombre:button.data('nombre'),
+        apellido:button.data('apellido'),
+        cumpleaños:button.data('cumpleaños'),
+        bio:button.data('bio'),
+        camada:button.data('camada'),
+        foto:button.data('foto'),
+        email:button.data('email'),
+        link_linkedin:button.data('linkedin'),
+        link_git:button.data('git'),
+      };
+      break;
+    case 'alumnos':
+      datos = {
+        id:button.data('id'),
+        nombre:button.data('nombre'),
+        apellido:button.data('apellido'),
+        cumpleaños:button.data('cumpleaños'),
+        camada:button.data('camada'),
+        foto:button.data('foto'),
+        cursos:button.data('cursos'),
+        email:button.data('email'),
+        nota:button.data('nota')
+      };
+      break;
+    case 'cursos':
+      datos = {
+        id: button.data('id'),
+        nombre: button.data('nombre'),
+        descripcion: button.data('descripcion'),
+        camada: button.data('camada'),
+        cantidad_clases: button.data('cantidad_clases'),
+        inicio: button.data('inicio'),
+        portada: button.data('portada'),
+        tipo: button.data('tipo'),
+      }; 
+    break;
+  }
+
+  modal.find('#form-contenido').empty();
+  if(!datos.id == ''){
+    modal.find('.modal-title').text('Editar a:' + datos.nombre);
+    modal.find('#accion').attr('value',button.data('if'))
+    modal.find('form').attr('action','editar')
+  }else{
+    modal.find('.modal-title').text('Crear nuevo reginstro en:' + button.data('if'));
+    $('<div/>',{
+      html:'<input type="hidden" class="form-control" id="db" name="db" value="'+button.data('if')+'">',
+      'class':'hidden form-group row'
+      }).appendTo(modal.find('#form-contenido'))
+    modal.find('#accion').attr('value','nuevo')
+    modal.find('form').attr('action','nuevo')
+  }
+
+  for(var val = 0 in datos){
+
+    if(val === 'foto' || val == 'portada'){
+      $('<div/>',{
+      html:'<label class="col-sm-2 col-form-label" for="'+ val + '">'+ val +'</label><div class="col-sm-10"><input type="file" accept=".png, .jpeg" class="form-control" id="'+val+'" name="'+val+'" value="'+datos[val]+'"></div>',
+      'class':'form-group row'
+      }).appendTo(modal.find('#form-contenido'))
+    }else if (val == 'cumpleaños'){
+      $('<div/>',{
+      html:'<label class="col-sm-2 col-form-label" for="'+ val + '">'+ val +'</label><div class="col-sm-10"><input type="date" class="form-control" id="'+val+'" name="'+val+'" value="'+datos[val]+'"></div>',
+      'class':'form-group row'
+      }).appendTo(modal.find('#form-contenido'))
+    } else if (val === 'tipo'){
+      $('<div/>',{
+      html:'<label class="col-sm-2 col-form-label" for="'+ val + '">'+ val +'</label><div class="col-sm-10"><input disabled type="text" class="form-control" id="'+val+'" name="'+val+'" value="'+datos[val]+'"></div>',
+      'class':'form-group row'
+      }).appendTo(modal.find('#form-contenido'))
+    } else if (val === 'id'){
+      if(!datos[val] == ''){
+        $('<div/>',{
+        html:'<label class="col-sm-2 col-form-label" for="'+ val + '">'+ val +'</label><div class="col-sm-10"><input type="text" class="form-control" id="'+val+'" name="'+val+'" value="'+datos[val]+'"></div>',
+        'class':'form-group row'
+        }).appendTo(modal.find('#form-contenido'))
+      }
+    } else {
+
+      $('<div/>',{
+      html:'<label class="col-sm-2 col-form-label" for="'+ val + '">'+ val +'</label><div class="col-sm-10"><input type="text" class="form-control" id="'+val+'" name="'+val+'" value="'+datos[val]+'"></div>',
+      'class':'form-group row'
+      }).appendTo(modal.find('#form-contenido'))
+
+    }
+  }
+
+})
+</script>
+{% else %}
+<section class="panel section-bg">
+  <h1 >Por favor inicie sesion</h1>
+</section>
+{% endif %}
+{% endblock %}
+

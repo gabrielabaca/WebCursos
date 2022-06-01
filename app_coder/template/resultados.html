@@ -1,0 +1,93 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+{% block buscar %}
+<div class="container container-fluid resultados">
+{% if busqueda %}
+    <h2>Resultados para: <strong>"{{busqueda}}":</strong></h2>
+
+    {% if profesores %}
+       <table class="table">
+           <h3>Profesores:</h3>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Cumpleaños</th>
+            <th scope="col">Bio</th>
+            <th scope="col">Camada</th>
+            <th scope="col">email</th>
+          </tr>
+        </thead>
+        {% for x in profesores %}
+        <tr>
+            <th>{{x.id}}</th>
+            <td>{{x.apellido}}, {{x.nombre}}</td>
+            <td>{{x.cumpleaños}}</td>
+            <td>{{x.bio}}</td>
+            <td>{{x.camada}}</td>
+            <td>{{x.email}}</td>
+        {% endfor %}
+        <tbody>
+        </tbody>
+    </table>
+    {% endif %}
+    {% if alumnos %}
+    <table class="table">
+        <h3>Alumnos:</h3>
+     <thead>
+       <tr>
+         <th scope="col">ID</th>
+         <th scope="col">Nombre</th>
+         <th scope="col">Cumpleaños</th>
+         <th scope="col">camada</th>
+         <th scope="col">Cursos</th>
+         <th scope="col">Nota</th>
+         <th scope="col">Email</th>
+       </tr>
+     </thead>
+     {% for x in alumnos %}
+     <tr>
+         <th>{{x.id}}</th>
+         <td>{{x.apellido}}, {{x.nombre}}</td>
+         <td>{{x.cumpleaños}}</td>
+         <td>{{x.camada}}</td>
+         <td>{{x.cursos}}</td>
+         <td>{{x.nota}}</td>
+         <td>{{x.email}}</td>
+     {% endfor %}
+     <tbody>
+     </tbody>
+ </table>
+    {% endif %}
+    {% if cursos %}
+    <table class="table">
+        <h3>Cursos:</h3>
+     <thead>
+       <tr>
+         <th scope="col">ID</th>
+         <th scope="col">Nombre</th>
+         <th scope="col">Camada</th>
+         <th scope="col">Clases</th>
+         <th scope="col">Inicio</th>
+         <th scope="col">Tipo</th>
+       </tr>
+     </thead>
+     {% for x in cursos %}
+     <tr>
+         <th>{{x.id}}</th>
+         <td>{{x.nombre}}</td>
+         <td>{{x.camada}}</td>
+         <td>{{x.cantidad_clases}}</td>
+         <td>{{x.inicio}}</td>
+         <td>{{x.tipo}}</td>
+     {% endfor %}
+     <tbody>
+     </tbody>
+ </table>
+    {% endif %}
+{% else %}
+<h2>No hay resultados</h2>
+{% endif %}
+</div>
+{% endblock %}
