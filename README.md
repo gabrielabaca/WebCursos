@@ -1,6 +1,6 @@
-# ENTREGA INTERMEDIA DEL PROYECTO FINAL
+# WebCursos
 
-Desarrollar una WEB Django con patrón MVT subida a Github.
+## Web de ejemplo de Cursos con Django + Bootstrap + JS 
 
 
 # Prerequerimientos:
